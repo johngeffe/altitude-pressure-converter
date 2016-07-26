@@ -19,9 +19,13 @@ var config = {
   altitude: 1000,
   units: {
     temp: 'F',
-    altitude: 'ft'
+    altitude: 'ft',
+    pressure: 'Pa'
   }
 };
+
+console.log(AltConverter.altitudeToPressure(config));
+// returns 101325 Pascals
 
 ```
 
