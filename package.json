@@ -4,7 +4,7 @@
   "description": "Convert altitude to pressure to altitude",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --reporter list"
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,9 @@
   "bugs": {
     "url": "https://github.com/johngeffe/altitude-pressure-converter/issues"
   },
-  "homepage": "https://github.com/johngeffe/altitude-pressure-converter#readme"
+  "homepage": "https://github.com/johngeffe/altitude-pressure-converter#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  }
 }

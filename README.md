@@ -19,7 +19,7 @@ var config = {
   altitude: 1000,
   units: {
     temp: 'F',
-    altidute: 'ft'
+    altitude: 'ft'
   }
 };
 
