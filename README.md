@@ -25,7 +25,7 @@ var config = {
 };
 
 console.log(AltConverter.altitudeToPressure(config));
-// returns 101325 Pascals
+// returns 97722.72887817245 Pascals
 
 ```
 
