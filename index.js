@@ -196,9 +196,37 @@ function press_temp_alt(b, k, j) {
 
 module.exports.altitudeToPressure = function(opts) {
     //var e = convertUnits(opts.pressureAtSeaLevel, opts.units.pressure);
-    var e = 101325; // pressure at sea level in 'Pa'
-    var a = convertUnits(opts.temp, opts.units.temp);
-    var d = convertUnits(opts.altitude, opts.units.altitude);
+
+    var options = opts || {
+        pressureAtSeaLevel: 101325,
+        temp: 288.15,
+        altitude: 0
+    }
+    options.units = opts.units || {
+        temp: 'K',
+        altitude: 'm',
+        pressure: 'Pa'
+    };
+
+    options.pressureAtSeaLevel = options.pressureAtSeaLevel || 101325;
+    options.altitude = options.altitude || 0;
+    options.temp = options.temp || 288.15;
+
+    var e = options.pressureAtSeaLevel; // pressure at sea level in 'Pa'
+    var a = 288.15; // 15C/59.9F in Kelvin
+    var d = 0; // altitude 
+    if ((opts.units.pressure !== 'Pa') && (opts.pressureAtSeaLevel == undefined)) {
+        e = convertUnits(e, opts.units.pressure);
+    };
+    if ((opts.units.temp !== 'K') && (opts.temp == undefined)) {
+        a = convertUnits(a, opts.units.temp);
+    };
+    if ((opts.units.altitude !== 'm') && (opts.altitude == undefined)) {
+        d = convertUnits(d, opts.units.altitude);
+    }
+    if (opts.pressureAtSeaLevel) e = convertUnits(opts.pressureAtSeaLevel, opts.units.pressure);
+    if (opts.temp) a = convertUnits(opts.temp, opts.units.temp);
+    if (opts.altitude) { d = convertUnits(opts.altitude, opts.units.altitude) };
     if (d > 20000) {
         // "The maximum altitude is 20,000 meters (65,617 feet)."
         return
