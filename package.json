@@ -1,38 +1,38 @@
 {
-    "name": "altitude-pressure-converter",
-    "version": "1.1.0",
-    "description": "Convert altitude to pressure to altitude",
-    "main": "index.js",
-    "scripts": {
-        "test": "mocha --reporter list"
-    },
-    "tonicExampleFilename": "example.js",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/johngeffe/altitude-pressure-converter.git"
-    },
-    "keywords": [
-        "altitude",
-        "in",
-        "feet",
-        "or",
-        "meters",
-        "to",
-        "pressure",
-        "in",
-        "Pascals",
-        "Psia",
-        "or",
-        "Atmospheres"
-    ],
-    "author": "John Geffe",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/johngeffe/altitude-pressure-converter/issues"
-    },
-    "homepage": "https://github.com/johngeffe/altitude-pressure-converter#readme",
-    "devDependencies": {
-        "chai": "^3.5.0",
-        "mocha": "^2.5.3"
-    }
+  "name": "altitude-pressure-converter",
+  "version": "1.2.0",
+  "description": "Convert altitude to pressure to altitude",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter list"
+  },
+  "tonicExampleFilename": "example.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johngeffe/altitude-pressure-converter.git"
+  },
+  "keywords": [
+    "altitude",
+    "in",
+    "feet",
+    "or",
+    "meters",
+    "to",
+    "pressure",
+    "in",
+    "Pascals",
+    "Psia",
+    "or",
+    "Atmospheres"
+  ],
+  "author": "John Geffe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johngeffe/altitude-pressure-converter/issues"
+  },
+  "homepage": "https://github.com/johngeffe/altitude-pressure-converter#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  }
 }
