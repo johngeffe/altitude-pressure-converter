@@ -59,3 +59,17 @@ describe('#altitudeToPressure', function() {
         expect(altitudeToPressure(options)).equals(101325);
     });
 });
+describe('#altitudeToPressure', function() {
+    it('no options supplied = 101325', function() {
+        var options = {
+            temp: 59.9,
+            altitude: 0,
+            units: {
+                temp: 'F',
+                pressure: 'Pa',
+                altitude: 'ft'
+            }
+        };
+        expect(altitudeToPressure()).equals(101325);
+    });
+});

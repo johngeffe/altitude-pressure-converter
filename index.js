@@ -1,43 +1,3 @@
-function altConversion(opts) {
-    opts || (opts = {});
-    opts.units = unitsFormat(opts.units);
-    return new AltConversion(opts);
-}
-
-module.exports = altConversion;
-
-function AltConversion(opts) {
-    this.units = opts.units;
-    this.pressureAtSeaLevel = opts.pressureAtSeaLevel;
-    this.temp = opts.temp;
-    this.pressureAtAltitude = opts.pressureAtAltitude;
-    this.altitude = opts.elev;
-    this._units = {
-        temp: opts.units.temp,
-        pressure: opts.units.pressure,
-        altitude: opts.units.altitude
-    };
-}
-
-AltConversion.prototype.toPascals = function() {
-    this._units.pressure = 'Pa';
-    return this;
-}
-
-AltConversion.prototype.toPa = AltConversion.prototype.toPascals;
-
-AltConversion.prototype.toPsi = function() {
-    this._units.pressure = 'psi';
-    return this;
-}
-
-AltConversion.prototype.toAtmospheres = function() {
-    this._units.pressure = 'atm';
-    return this;
-}
-
-AltConversion.prototype.toAtm = AltConversion.prototype.toAtmospheres;
-
 // constants
 var M = 0.0289644;
 var g = 9.80665; //1 mmH20, mmWg, mmWC = Millimeters of Water as Pascals
@@ -49,7 +9,7 @@ function noChange(a) {
     return a
 }
 
-/*
+/* this should be a seperate NPM module.  Maybe later.
 m = meters | ft = feet
 pa = pascals | psi = psi | atm = atmosphere
 C = Celcius | F = Fahrenheit | K = Kelvin
@@ -147,7 +107,7 @@ function convertUnits(a, c, b) {
     b = b == null ? "standard" : b;
     return unitConversions[c][b](a);
 }
-/*
+/* constants
 var M = 0.0289644; 
 var g = 9.80665; //1 mmH20, mmWg, mmWC = Millimeters of Water as Pascals
 var R = 8.31432;
@@ -195,26 +155,36 @@ function press_temp_alt(b, k, j) {
 }
 
 module.exports.altitudeToPressure = function(opts) {
-    //var e = convertUnits(opts.pressureAtSeaLevel, opts.units.pressure);
+    // just in case no options are supplied return sea level
 
-    var options = opts || {
-        pressureAtSeaLevel: 101325,
-        temp: 288.15,
-        altitude: 0
+    if (opts === undefined) {
+        opts = {
+            pressureAtSeaLevel: 101325,
+            pressureAtAltitude: 101325,
+            temp: 288.15,
+            altitude: 0
+        }
     }
-    options.units = opts.units || {
-        temp: 'K',
-        altitude: 'm',
-        pressure: 'Pa'
-    };
+    if (opts.units === undefined) {
+        opts.units = {
+            temp: 'K',
+            altitude: 'm',
+            pressure: 'Pa'
+        }
+    }
+    opts.pressureAtSeaLevel = opts.pressureAtSeaLevel == undefined ? 101325 : opts.pressureAtSeaLevel;
+    opts.pressureAtAltitude = opts.pressureAtAltitude == undefined ? 101325 : opts.pressureAtAltitude;
+    opts.altitude = opts.altitude == undefined ? 0 : opts.altitude;
+    opts.temp = opts.temp == undefined ? 288.15 : opts.temp;
+    opts.units.pressure = opts.units.pressure == undefined ? 'Pa' : opts.units.pressure;
+    opts.units.temp = opts.units.temp == undefined ? 'K' : opts.units.temp;
+    opts.units.altitude = opts.units.altitude == undefined ? 'm' : opts.units.altitude;
 
-    options.pressureAtSeaLevel = options.pressureAtSeaLevel || 101325;
-    options.altitude = options.altitude || 0;
-    options.temp = options.temp || 288.15;
-
-    var e = options.pressureAtSeaLevel; // pressure at sea level in 'Pa'
-    var a = 288.15; // 15C/59.9F in Kelvin
-    var d = 0; // altitude 
+    var e = opts.pressureAtSeaLevel; // pressure at sea level in 'Pa'
+    var a = opts.temp; // 15C/59.9F in Kelvin
+    var d = opts.altitude; // altitude 
+    // if units are changed but the property is not supplied convert the default
+    // to the specified unit.  which will be converted back to the default for the final calc.
     if ((opts.units.pressure !== 'Pa') && (opts.pressureAtSeaLevel == undefined)) {
         e = convertUnits(e, opts.units.pressure);
     };
@@ -236,8 +206,32 @@ module.exports.altitudeToPressure = function(opts) {
 };
 
 module.exports.pressureToAltitude = function(opts) {
+
+    if (opts === undefined) {
+        opts = {
+            pressureAtSeaLevel: 101325,
+            pressureAtAltitude: 101325,
+            temp: 288.15,
+            altitude: 0
+        }
+    }
+    if (opts.units === undefined) {
+        opts.units = {
+            temp: 'K',
+            altitude: 'm',
+            pressure: 'Pa'
+        }
+    }
+    opts.pressureAtSeaLevel = opts.pressureAtSeaLevel == undefined ? 101325 : opts.pressureAtSeaLevel;
+    opts.pressureAtAltitude = opts.pressureAtAltitude == undefined ? 101325 : opts.pressureAtAltitude;
+    opts.altitude = opts.altitude == undefined ? 0 : opts.altitude;
+    opts.temp = opts.temp == undefined ? 288.15 : opts.temp;
+    opts.units.pressure = opts.units.pressure == undefined ? 'Pa' : opts.units.pressure;
+    opts.units.temp = opts.units.temp == undefined ? 'K' : opts.units.temp;
+    opts.units.altitude = opts.units.altitude == undefined ? 'm' : opts.units.altitude;
+
     // var d = convertUnits(opts.pressureAtSeaLevel, opts.units.pressure, 'Pa');
-    var d = 101325; // pressure at sea level in 'Pa'
+    var d = convertUnits(opts.pressureAtSeaLevel, opts.units.pressure, 'Pa'); // pressure at sea level in 'Pa'
     var a = convertUnits(opts.temp, opts.units.temp, 'K');
     var c = convertUnits(opts.pressureAtAltitude, opts.units.pressure, 'Pa');
     if ((d / c) >= (101325 / 5474.89)) {
