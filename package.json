@@ -1,6 +1,6 @@
 {
   "name": "altitude-pressure-converter",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Convert altitude to pressure to altitude",
   "main": "index.js",
   "scripts": {
